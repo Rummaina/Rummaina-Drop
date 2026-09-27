@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Google Site Verification Tag -->
     <meta name="google-site-verification" content="HD4Ka6eVgkZmB7aYIUnr5-PrBqLKtklAWdJuhsd9Ys0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -128,9 +129,9 @@
         &copy; 2026 Rummaina Drop. All rights reserved.
     </footer>
 
-    <!-- Custom Star Rating Modal -->
+    <!-- 7 Stars Rating Modal -->
     <div id="ratingModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-cardId bg-cardBg border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
+        <div class="bg-cardBg border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
             <div class="text-3xl">🌟</div>
             <h3 class="text-xl font-bold text-slate-100">Aapne 3 Projects Pure Kar Liye!</h3>
             <p class="text-sm text-slate-400">7 stars mein se aap hamari website ko kitna rate karna chahenge?</p>
@@ -229,7 +230,7 @@
                         const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
                         downloadLink.download = `${baseName}-rummaina-converted.${chosenFormat}`;
 
-                        // Yahan check hoga ke 3 projects ho gaye ya nahi
+                        // Track project count for rating modal
                         checkProjectCount();
                     }, 300);
                 }
@@ -269,7 +270,6 @@
             star.addEventListener('click', () => {
                 const val = parseInt(star.getAttribute('data-value'));
                 
-                // Highlight stars
                 stars.forEach((s, idx) => {
                     if (idx < val) {
                         s.classList.remove('text-slate-600');
@@ -280,7 +280,6 @@
                     }
                 });
 
-                // Show reaction message
                 reactionBox.innerHTML = reactions[val];
                 closeModalBtn.classList.remove('hidden');
             });
