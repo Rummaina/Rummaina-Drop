@@ -82,10 +82,8 @@
                     <button id="removeFile" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-2 py-1 bg-rose-500/10 rounded-lg">Remove</button>
                 </div>
                 
-                <!-- Preview Container for Images/Video/Audio -->
-                <div id="previewContainer" class="hidden my-3 flex justify-center">
-                    <!-- Dynamic preview rendered here -->
-                </div>
+                <!-- Preview Container -->
+                <div id="previewContainer" class="hidden my-3 flex justify-center"></div>
 
                 <div class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                     <label class="text-sm font-medium text-slate-300 w-full sm:w-auto">Convert format to:</label>
@@ -163,7 +161,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Pro Logic with Real Conversion Support -->
+    <!-- JavaScript Pro Logic -->
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -207,7 +205,6 @@
             previewContainer.innerHTML = '';
             previewContainer.classList.add('hidden');
 
-            // Auto-select format options based on file type
             if (file.type.startsWith('image/')) {
                 formatSelect.innerHTML = `
                     <option value="png">PNG</option>
@@ -224,7 +221,6 @@
                 formatSelect.innerHTML = `
                     <option value="mp3">MP3</option>
                     <option value="wav">WAV</option>
-                    <option value="aac">AAC</option>
                 `;
                 previewContainer.innerHTML = `<audio controls class="w-full h-10"><source src="${URL.createObjectURL(file)}"></audio>`;
                 previewContainer.classList.remove('hidden');
@@ -232,15 +228,9 @@
                 formatSelect.innerHTML = `
                     <option value="mp4">MP4</option>
                     <option value="webm">WEBM</option>
-                    <option value="mkv">MKV</option>
                 `;
                 previewContainer.innerHTML = `<video controls class="max-h-32 rounded-lg border border-slate-700"><source src="${URL.createObjectURL(file)}"></video>`;
                 previewContainer.classList.remove('hidden');
-            } else {
-                formatSelect.innerHTML = `
-                    <option value="pdf">PDF</option>
-                    <option value="txt">TXT</option>
-                `;
             }
         }
 
@@ -254,7 +244,6 @@
             previewContainer.classList.add('hidden');
         });
 
-        // Pro Conversion Engine (Images canvas conversion + general emulation for audio/video)
         convertBtn.addEventListener('click', () => {
             if (!selectedFile) return;
             convertBtn.classList.add('hidden');
@@ -266,7 +255,7 @@
             progressStatusText.innerText = `Converting to ${chosenFormat.toUpperCase()}...`;
 
             const interval = setInterval(() => {
-                progress += 20;
+                progress += 25;
                 progressBar.style.width = progress + '%';
                 progressPercent.innerText = progress + '%';
 
@@ -277,7 +266,6 @@
                         successBox.classList.remove('hidden');
 
                         if (selectedFile.type.startsWith('image/')) {
-                            // Real Image Format Conversion using Canvas
                             const reader = new FileReader();
                             reader.onload = (event) => {
                                 const img = new Image();
@@ -303,7 +291,6 @@
                             };
                             reader.readAsDataURL(selectedFile);
                         } else {
-                            // Audio/Video/Document stream handling
                             const blob = new Blob([selectedFile], { type: selectedFile.type });
                             const url = URL.createObjectURL(blob);
                             downloadLink.href = url;
@@ -311,11 +298,11 @@
                             downloadLink.download = `${baseName}-rummaina-pro.${chosenFormat}`;
                         }
 
-                        // Track projects for 3-project rating popup
+                        // Check 3 projects completed
                         checkProjectCount();
-                    }, 400);
+                    }, 300);
                 }
-            }, 250);
+            }, 200);
         });
 
         // 3 Projects Logic & Star Rating System
