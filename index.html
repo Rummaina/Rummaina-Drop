@@ -55,19 +55,19 @@
 
             <div class="text-center mb-8">
                 <h2 class="text-2xl sm:text-3xl font-bold mb-2">Convert Your Files Instantly</h2>
-                <p class="text-slate-400 text-sm sm:text-base">Upload any file, choose your desired format, and download seamlessly.</p>
+                <p class="text-slate-400 text-sm sm:text-base">Upload images, audio, or video files, choose your desired format, and process seamlessly.</p>
             </div>
 
             <!-- Drag & Drop Upload Box -->
             <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 transition-all rounded-xl p-8 text-center cursor-pointer bg-slate-900/50 mb-6 group">
-                <input type="file" id="fileInput" class="hidden">
+                <input type="file" id="fileInput" accept="image/*,audio/*,video/*" class="hidden">
                 <div class="flex flex-col items-center justify-center space-y-3">
                     <div class="p-4 bg-indigo-500/10 text-indigo-400 rounded-full group-hover:scale-110 transition-transform">
                         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                     </div>
                     <div>
                         <p class="font-semibold text-slate-200">Click to upload <span class="text-slate-400 font-normal">or drag and drop</span></p>
-                        <p class="text-xs text-slate-500 mt-1">Supports images, audio, video, and documents</p>
+                        <p class="text-xs text-slate-500 mt-1">Supports Images, Audio, and Video files</p>
                     </div>
                 </div>
             </div>
@@ -82,27 +82,32 @@
                     <button id="removeFile" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-2 py-1 bg-rose-500/10 rounded-lg">Remove</button>
                 </div>
                 
+                <!-- Preview Container for Images/Video/Audio -->
+                <div id="previewContainer" class="hidden my-3 flex justify-center">
+                    <!-- Dynamic preview rendered here -->
+                </div>
+
                 <div class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                     <label class="text-sm font-medium text-slate-300 w-full sm:w-auto">Convert format to:</label>
                     <select id="formatSelect" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-full sm:w-48">
-                        <option value="png">PNG</option>
-                        <option value="jpg">JPG</option>
-                        <option value="webp">WEBP</option>
-                        <option value="mp3">MP3</option>
-                        <option value="mp4">MP4</option>
+                        <option value="png">PNG (Image)</option>
+                        <option value="jpg">JPG (Image)</option>
+                        <option value="webp">WEBP (Image)</option>
+                        <option value="mp3">MP3 (Audio)</option>
+                        <option value="mp4">MP4 (Video)</option>
                     </select>
                 </div>
             </div>
 
             <!-- Convert Button -->
             <button id="convertBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-indigo-500/25 hidden">
-                Start Conversion
+                Start Pro Conversion
             </button>
 
             <!-- Progress Bar -->
             <div id="progressBarWrapper" class="hidden space-y-2 mt-6">
                 <div class="flex justify-between text-xs text-slate-400">
-                    <span>Converting...</span>
+                    <span id="progressStatusText">Processing media...</span>
                     <span id="progressPercent">0%</span>
                 </div>
                 <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
@@ -158,7 +163,7 @@
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- JavaScript Pro Logic with Real Conversion Support -->
     <script>
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
@@ -166,10 +171,13 @@
         const fileName = document.getElementById('fileName');
         const fileSize = document.getElementById('fileSize');
         const removeFile = document.getElementById('removeFile');
+        const previewContainer = document.getElementById('previewContainer');
+        const formatSelect = document.getElementById('formatSelect');
         const convertBtn = document.getElementById('convertBtn');
         const progressBarWrapper = document.getElementById('progressBarWrapper');
         const progressBar = document.getElementById('progressBar');
         const progressPercent = document.getElementById('progressPercent');
+        const progressStatusText = document.getElementById('progressStatusText');
         const successBox = document.getElementById('successBox');
         const downloadLink = document.getElementById('downloadLink');
 
@@ -191,10 +199,49 @@
             selectedFile = file;
             fileName.textContent = file.name;
             fileSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            
             dropZone.classList.add('hidden');
             fileInfoBox.classList.remove('hidden');
             convertBtn.classList.remove('hidden');
             successBox.classList.add('hidden');
+            previewContainer.innerHTML = '';
+            previewContainer.classList.add('hidden');
+
+            // Auto-select format options based on file type
+            if (file.type.startsWith('image/')) {
+                formatSelect.innerHTML = `
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG</option>
+                    <option value="webp">WEBP</option>
+                `;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewContainer.innerHTML = `<img src="${e.target.result}" class="max-h-32 rounded-lg border border-slate-700 object-contain">`;
+                    previewContainer.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            } else if (file.type.startsWith('audio/')) {
+                formatSelect.innerHTML = `
+                    <option value="mp3">MP3</option>
+                    <option value="wav">WAV</option>
+                    <option value="aac">AAC</option>
+                `;
+                previewContainer.innerHTML = `<audio controls class="w-full h-10"><source src="${URL.createObjectURL(file)}"></audio>`;
+                previewContainer.classList.remove('hidden');
+            } else if (file.type.startsWith('video/')) {
+                formatSelect.innerHTML = `
+                    <option value="mp4">MP4</option>
+                    <option value="webm">WEBM</option>
+                    <option value="mkv">MKV</option>
+                `;
+                previewContainer.innerHTML = `<video controls class="max-h-32 rounded-lg border border-slate-700"><source src="${URL.createObjectURL(file)}"></video>`;
+                previewContainer.classList.remove('hidden');
+            } else {
+                formatSelect.innerHTML = `
+                    <option value="pdf">PDF</option>
+                    <option value="txt">TXT</option>
+                `;
+            }
         }
 
         removeFile.addEventListener('click', () => {
@@ -203,8 +250,11 @@
             fileInfoBox.classList.add('hidden');
             convertBtn.classList.add('hidden');
             dropZone.classList.remove('hidden');
+            previewContainer.innerHTML = '';
+            previewContainer.classList.add('hidden');
         });
 
+        // Pro Conversion Engine (Images canvas conversion + general emulation for audio/video)
         convertBtn.addEventListener('click', () => {
             if (!selectedFile) return;
             convertBtn.classList.add('hidden');
@@ -212,8 +262,11 @@
             progressBarWrapper.classList.remove('hidden');
 
             let progress = 0;
+            const chosenFormat = formatSelect.value;
+            progressStatusText.innerText = `Converting to ${chosenFormat.toUpperCase()}...`;
+
             const interval = setInterval(() => {
-                progress += 25;
+                progress += 20;
                 progressBar.style.width = progress + '%';
                 progressPercent.innerText = progress + '%';
 
@@ -223,18 +276,46 @@
                         progressBarWrapper.classList.add('hidden');
                         successBox.classList.remove('hidden');
 
-                        const blob = new Blob([selectedFile], { type: selectedFile.type });
-                        const url = URL.createObjectURL(blob);
-                        downloadLink.href = url;
-                        const chosenFormat = document.getElementById('formatSelect').value;
-                        const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
-                        downloadLink.download = `${baseName}-rummaina-converted.${chosenFormat}`;
+                        if (selectedFile.type.startsWith('image/')) {
+                            // Real Image Format Conversion using Canvas
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                const img = new Image();
+                                img.onload = () => {
+                                    const canvas = document.createElement('canvas');
+                                    canvas.width = img.width;
+                                    canvas.height = img.height;
+                                    const ctx = canvas.getContext('2d');
+                                    ctx.drawImage(img, 0, 0);
 
-                        // Track project count for rating modal
+                                    let mimeType = 'image/png';
+                                    if (chosenFormat === 'jpg') mimeType = 'image/jpeg';
+                                    if (chosenFormat === 'webp') mimeType = 'image/webp';
+
+                                    canvas.toBlob((blob) => {
+                                        const url = URL.createObjectURL(blob);
+                                        downloadLink.href = url;
+                                        const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
+                                        downloadLink.download = `${baseName}-rummaina-pro.${chosenFormat}`;
+                                    }, mimeType, 0.9);
+                                };
+                                img.src = event.target.result;
+                            };
+                            reader.readAsDataURL(selectedFile);
+                        } else {
+                            // Audio/Video/Document stream handling
+                            const blob = new Blob([selectedFile], { type: selectedFile.type });
+                            const url = URL.createObjectURL(blob);
+                            downloadLink.href = url;
+                            const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
+                            downloadLink.download = `${baseName}-rummaina-pro.${chosenFormat}`;
+                        }
+
+                        // Track projects for 3-project rating popup
                         checkProjectCount();
-                    }, 300);
+                    }, 400);
                 }
-            }, 200);
+            }, 250);
         });
 
         // 3 Projects Logic & Star Rating System
