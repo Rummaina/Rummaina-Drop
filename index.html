@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-    <!-- Google Site Verification Tag -->
-    <meta name="google-site-verification" content="HD4Ka6eVgkZmB7aYIUnr5-PrBqLKtklAWdJuhsd9Ys0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rummaina Drop - Universal Multi-Media Converter Suite</title>
@@ -14,246 +12,493 @@
             theme: {
                 extend: {
                     colors: {
-                        darkBg: '#0f172a',
-                        cardBg: '#1e293b',
+                        primary: {
+                            50: '#fdf4ff',
+                            500: '#a855f7',
+                            600: '#9333ea',
+                            700: '#7e22ce',
+                        }
                     }
                 }
             }
         }
     </script>
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .neon-glow {
+            box-shadow: 0 0 70px -15px rgba(168, 85, 247, 0.3);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="bg-darkBg text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+<body class="bg-[#030712] text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-purple-500 selection:text-white">
 
-    <!-- Header Section -->
-    <header class="w-full border-b border-slate-800 bg-cardBg/50 backdrop-blur-md sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- Ambient Glow Background Blobs -->
+    <div class="absolute top-0 left-1/3 w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-pink-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- Navigation -->
+    <header class="border-b border-slate-800/60 sticky top-0 z-50 bg-[#030712]/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-gradient-to-tr from-indigo-500 to-purple-500 p-2 rounded-xl text-white font-bold shadow-lg">
-                    RD
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-500/30 animate-float">
+                    <i data-lucide="zap" class="w-5 h-5 text-white"></i>
                 </div>
-                <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                    Rummaina Drop
-                </h1>
+                <span class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-purple-400 bg-clip-text text-transparent">Rummaina<span class="text-purple-500">Drop</span></span>
             </div>
-            <span class="text-xs px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-full font-medium">
-                Multi-Media Suite
-            </span>
+            
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-400">
+                <a href="#tool" class="hover:text-purple-400 transition-colors">Converter Suite</a>
+                <a href="#features" class="hover:text-purple-400 transition-colors">Cloud GPU</a>
+                <button onclick="openRatingModal()" class="hover:text-purple-400 transition-colors flex items-center space-x-1">
+                    <i data-lucide="star" class="w-4 h-4 text-amber-400"></i>
+                    <span>Rate Us</span>
+                </button>
+            </div>
+
+            <!-- Top Right Pro Dropdown Menu Container -->
+            <div class="relative">
+                <button onclick="toggleProMenu()" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-purple-600/25 text-sm flex items-center space-x-2">
+                    <i data-lucide="crown" class="w-4 h-4 text-yellow-300"></i>
+                    <span>Go Pro 🚀</span>
+                </button>
+
+                <!-- Dropdown Options Box -->
+                <div id="proDropdown" class="absolute right-0 mt-3 w-64 glass-panel rounded-2xl p-3 shadow-2xl border border-purple-500/30 hidden z-50 space-y-2">
+                    <div class="p-2 border-b border-slate-800">
+                        <p class="text-xs font-bold text-white">Unlock Full Power</p>
+                        <p class="text-[10px] text-slate-400">Choose your Pro membership tier:</p>
+                    </div>
+                    <!-- Monthly Option -->
+                    <a href="https://your-lemon-squeezy-monthly-link.com" target="_blank" class="block p-3 rounded-xl bg-slate-900/80 hover:bg-purple-600/20 border border-slate-800 hover:border-purple-500 transition-all">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-white">Monthly Pass</span>
+                            <span class="text-xs font-extrabold text-purple-400">$7 /mo</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Cancel anytime, full cloud speed.</p>
+                    </a>
+                    <!-- Lifetime Option -->
+                    <a href="https://your-lemon-squeezy-lifetime-link.com" target="_blank" class="block p-3 rounded-xl bg-gradient-to-r from-purple-900/40 to-pink-900/40 hover:from-purple-900/60 hover:to-pink-900/60 border border-purple-500/40 transition-all">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-bold text-yellow-300">Lifetime Access ⭐</span>
+                            <span class="text-xs font-extrabold text-white">$39</span>
+                        </div>
+                        <p class="text-[10px] text-purple-200 mt-0.5">Pay once, own forever (Best Value).</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </header>
 
-    <!-- Main Converter Area -->
-    <main class="max-w-3xl mx-auto px-4 py-12 flex-grow w-full">
-        <div class="bg-cardBg border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+    <!-- Google Search & Review Integration Bar -->
+    <div class="max-w-4xl mx-auto px-4 mt-6">
+        <div class="bg-gradient-to-r from-purple-900/20 via-slate-900/60 to-purple-900/20 border border-purple-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 text-left">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
+                    <i data-lucide="search" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white flex items-center space-x-1.5">
+                        <span>Google Search & Index Integration</span>
+                        <span class="bg-emerald-500/10 text-emerald-400 text-[9px] px-2 py-0.5 rounded-full border border-emerald-500/20 font-semibold">Active</span>
+                    </h4>
+                    <p class="text-[10px] text-slate-400">Optimized for Google Web Crawlers & Instant Results.</p>
+                </div>
+            </div>
+            <a href="https://www.google.com/search?q=Rummaina+Drop" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-purple-300 hover:text-white border border-purple-500/30 text-xs font-bold px-4 py-2 rounded-xl transition-all flex items-center space-x-2">
+                <span>Check Google Index</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Google Ad Banner (Top Section for Per-Click / Per-View Earning) -->
+    <div class="max-w-4xl mx-auto px-4 mt-4">
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center text-xs text-slate-500 relative overflow-hidden">
+            <span class="absolute top-1 left-2 text-[9px] uppercase tracking-wider text-slate-600">Sponsored Ad</span>
+            <div class="py-2 flex items-center justify-center space-x-2 text-slate-400">
+                <i data-lucide="badge-percent" class="w-4 h-4 text-purple-400"></i>
+                <span>Google Optimized Ad Placement (Generates revenue per view & click)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="pt-8 pb-6 px-4 text-center max-w-4xl mx-auto">
+        <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-semibold mb-4">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>Universal Media & Document Converter Suite</span>
+        </div>
+        <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
+            Convert Any Video, Image, or Doc. <span class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">No Limits.</span>
+        </h1>
+    </section>
+
+    <!-- Main Tool Interface -->
+    <main id="tool" class="max-w-4xl mx-auto px-4 pb-16">
+        <div class="glass-panel rounded-3xl p-6 sm:p-10 neon-glow relative">
             
-            <div class="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
-            <div class="text-center mb-8">
-                <h2 class="text-2xl sm:text-3xl font-bold mb-2">Convert Your Files Instantly</h2>
-                <p class="text-slate-400 text-sm sm:text-base">Upload images, audio, or video files, choose your desired format, and process seamlessly.</p>
+            <!-- Category Tabs -->
+            <div class="flex items-center space-x-2 border-b border-slate-800 pb-4 mb-6 overflow-x-auto">
+                <button onclick="switchTab('video')" id="tab-video" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-purple-600 text-white flex items-center space-x-2 shadow-md shadow-purple-600/20">
+                    <i data-lucide="video" class="w-4 h-4"></i>
+                    <span>Video Converter</span>
+                </button>
+                <button onclick="switchTab('image')" id="tab-image" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-slate-400 hover:text-white flex items-center space-x-2">
+                    <i data-lucide="image" class="w-4 h-4"></i>
+                    <span>Image Converter</span>
+                </button>
+                <button onclick="switchTab('audio')" id="tab-audio" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-slate-400 hover:text-white flex items-center space-x-2">
+                    <i data-lucide="music" class="w-4 h-4"></i>
+                    <span>Audio / Voice</span>
+                </button>
+                <button onclick="switchTab('doc')" id="tab-doc" class="px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-slate-400 hover:text-white flex items-center space-x-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i>
+                    <span>Document / PDF</span>
+                </button>
             </div>
 
-            <!-- Drag & Drop Upload Box -->
-            <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-indigo-500 transition-all rounded-xl p-8 text-center cursor-pointer bg-slate-900/50 mb-6 group">
-                <input type="file" id="fileInput" accept="image/*,audio/*,video/*" class="hidden">
-                <div class="flex flex-col items-center justify-center space-y-3">
-                    <div class="p-4 bg-indigo-500/10 text-indigo-400 rounded-full group-hover:scale-110 transition-transform">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            <!-- Dropzone Box -->
+            <div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-purple-500 rounded-2xl p-8 sm:p-12 text-center cursor-pointer transition-all bg-slate-900/50 hover:bg-slate-900/80 group">
+                <input type="file" id="fileInput" class="hidden">
+                <div class="w-16 h-16 bg-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <i id="dropIcon" data-lucide="video" class="w-8 h-8 text-purple-400"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Drop your <span id="currentTypeLabel">Video</span> file here, or <span class="text-purple-400 underline underline-offset-4">browse</span></h3>
+                <p id="dropSubLabel" class="text-xs text-slate-500 mt-2">Free Limit: Up to 50MB per file. (Need more? Go Pro!)</p>
+            </div>
+
+            <!-- Configuration & Action Controls -->
+            <div id="controlPanel" class="mt-8 hidden space-y-6 pt-6 border-t border-slate-800">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                            <i data-lucide="file" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <h4 id="fileName" class="text-sm font-bold text-white truncate max-w-[200px] sm:max-w-xs">sample-file.mp4</h4>
+                            <p id="fileSize" class="text-xs text-slate-400">14.2 MB</p>
+                        </div>
                     </div>
-                    <div>
-                        <p class="font-semibold text-slate-200">Click to upload <span class="text-slate-400 font-normal">or drag and drop</span></p>
-                        <p class="text-xs text-slate-500 mt-1">Supports Images, Audio, and Video files</p>
+
+                    <div class="flex items-center space-x-3 w-full sm:w-auto">
+                        <div class="flex-1 sm:flex-initial">
+                            <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Convert To</label>
+                            <select id="targetFormat" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl px-4 py-2.5 focus:outline-none focus:border-purple-500 w-full">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <button onclick="processConversion()" id="convertBtn" class="self-end bg-purple-600 hover:bg-purple-700 text-white font-bold px-6 py-2.5 rounded-xl transition-all text-xs shadow-md shadow-purple-600/30 flex items-center space-x-2">
+                            <span>Convert Now</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- File Details & Format Selection -->
-            <div id="fileInfoBox" class="hidden space-y-4 mb-6 p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p id="fileName" class="font-medium text-sm text-slate-200 truncate max-w-xs"></p>
-                        <p id="fileSize" class="text-xs text-slate-400"></p>
+                <!-- Progress Bar Simulation -->
+                <div id="progressBarWrapper" class="hidden space-y-2">
+                    <div class="flex justify-between text-xs text-slate-400">
+                        <span id="progressStatus">Encoding media stream...</span>
+                        <span id="progressPercent">0%</span>
                     </div>
-                    <button id="removeFile" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-2 py-1 bg-rose-500/10 rounded-lg">Remove</button>
+                    <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-800">
+                        <div id="progressBar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
                 </div>
-                
-                <!-- Preview Container -->
-                <div id="previewContainer" class="hidden my-3 flex justify-center"></div>
 
-                <div class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <label class="text-sm font-medium text-slate-300 w-full sm:w-auto">Convert format to:</label>
-                    <select id="formatSelect" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 w-full sm:w-48">
-                        <option value="png">PNG (Image)</option>
-                        <option value="jpg">JPG (Image)</option>
-                        <option value="webp">WEBP (Image)</option>
-                        <option value="mp3">MP3 (Audio)</option>
-                        <option value="mp4">MP4 (Video)</option>
-                    </select>
+                <!-- Success / Download Box -->
+                <div id="successBox" class="hidden p-4 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400">
+                            <i data-lucide="check" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-white">Conversion Successful!</p>
+                            <p class="text-[10px] text-purple-300">Your universal file is fully optimized and ready.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="openRatingModal()" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/30 font-bold px-3 py-2 rounded-xl text-xs transition-all flex items-center space-x-1">
+                            <i data-lucide="star" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span>Rate</span>
+                        </button>
+                        <a id="downloadLink" download="rummaina-converted-file.mp4" class="bg-white hover:bg-slate-200 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs transition-all shadow-md flex items-center space-x-1.5">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                            <span>Download</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Convert Button -->
-            <button id="convertBtn" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-indigo-500/25 hidden">
-                Start Pro Conversion
-            </button>
-
-            <!-- Progress Bar -->
-            <div id="progressBarWrapper" class="hidden space-y-2 mt-6">
-                <div class="flex justify-between text-xs text-slate-400">
-                    <span id="progressStatusText">Processing media...</span>
-                    <span id="progressPercent">0%</span>
-                </div>
-                <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                    <div id="progressBar" class="bg-indigo-500 h-full w-0 transition-all duration-200"></div>
-                </div>
-            </div>
-
-            <!-- Success Box & Download -->
-            <div id="successBox" class="hidden text-center mt-6 space-y-4">
-                <div class="inline-flex items-center justify-center p-3 bg-emerald-500/10 text-emerald-400 rounded-full mb-1">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                </div>
-                <h3 class="font-bold text-lg text-emerald-400">Conversion Successful!</h3>
-                <a id="downloadLink" class="inline-block w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-8 rounded-xl transition-all shadow-lg shadow-emerald-600/25 text-center">
-                    Download Converted File
-                </a>
             </div>
 
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="w-full border-t border-slate-800 bg-cardBg/50 py-4 text-center text-xs text-slate-500">
-        &copy; 2026 Rummaina Drop. All rights reserved.
-    </footer>
+    <!-- PRO UPGRADE TRIGGER MODAL -->
+    <div id="proModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-6 sm:p-8 border border-purple-500/40 text-center relative neon-glow">
+            <button onclick="closeProModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="w-14 h-14 bg-gradient-to-tr from-purple-600 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/30">
+                <i data-lucide="crown" class="w-7 h-7 text-yellow-300"></i>
+            </div>
+            <h3 class="text-xl font-black text-white">Free Limit Exceeded! 🚫</h3>
+            <p class="text-xs text-slate-400 mt-2">
+                Files larger than 50MB or bulk processing require <span class="text-purple-400 font-bold">Rummaina Drop Pro</span> with Cloud GPU processing.
+            </p>
 
-    <!-- 7 Stars Rating Modal -->
-    <div id="ratingModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-cardBg border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl text-center space-y-4">
-            <div class="text-3xl">🌟</div>
-            <h3 class="text-xl font-bold text-slate-100">Aapne 3 Projects Pure Kar Liye!</h3>
-            <p class="text-sm text-slate-400">7 stars mein se aap hamari website ko kitna rate karna chahenge?</p>
+            <div class="mt-6 space-y-3">
+                <a href="https://your-lemon-squeezy-lifetime-link.com" target="_blank" class="block w-full py-3 px-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-purple-600/30 transition-all">
+                    Unlock Lifetime Access ($39) ⭐
+                </a>
+                <a href="https://your-lemon-squeezy-monthly-link.com" target="_blank" class="block w-full py-3 px-4 bg-slate-900 hover:bg-slate-800 text-slate-200 font-bold rounded-xl text-xs border border-slate-700 transition-all">
+                    Get Monthly Pass ($7 /mo)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7-STAR RATING & FEEDBACK MODAL -->
+    <div id="ratingModal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-md w-full rounded-3xl p-6 sm:p-8 border border-amber-500/30 text-center relative neon-glow">
+            <button onclick="closeRatingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="w-14 h-14 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-500/20">
+                <i data-lucide="star" class="w-7 h-7 text-amber-400"></i>
+            </div>
+            <h3 class="text-xl font-black text-white">Rate Rummaina Drop</h3>
+            <p class="text-xs text-slate-400 mt-1">Click on the stars below to share your feedback:</p>
             
-            <!-- Stars Row -->
-            <div id="starsContainer" class="flex justify-center gap-1 sm:gap-2 my-2 cursor-pointer">
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="1">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="2">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="3">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="4">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="5">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="6">★</span>
-                <span class="star text-3xl text-slate-600 hover:text-amber-400 transition-colors" data-value="7">★</span>
+            <!-- 7 Interactive Stars Container -->
+            <div id="starContainer" class="flex justify-center items-center space-x-1.5 my-6">
+                <button type="button" data-value="1" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="2" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="3" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="4" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="5" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="6" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
+                <button type="button" data-value="7" class="star-btn p-1 text-slate-600 hover:scale-110 transition-transform"><i data-lucide="star" class="w-7 h-7 fill-current"></i></button>
             </div>
 
-            <!-- Dynamic Reaction & Emoji Display -->
-            <div id="reactionBox" class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-sm text-slate-300 min-h-[60px] flex items-center justify-center">
-                Stars par click karein aur hamara reaction dekhein! 👇
+            <!-- Dynamic Rating Reaction Box -->
+            <div id="reactionBox" class="p-3 bg-slate-900/80 border border-slate-800 rounded-2xl text-xs text-slate-300 mb-6 font-medium">
+                Please select a rating from 1 to 7 stars above!
             </div>
 
-            <button id="closeModalBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl transition-all hidden">
+            <button id="closeModal1Btn" onclick="closeRatingModal()" class="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl text-xs shadow-lg shadow-purple-600/30 transition-all hidden">
                 Submit & Close
             </button>
         </div>
     </div>
 
-    <!-- JavaScript Pro Logic -->
+    <!-- Google Ad Banner (Bottom Footer Section) -->
+    <div class="max-w-4xl mx-auto px-4 pb-12">
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 text-center text-xs text-slate-500 relative">
+            <span class="absolute top-1 left-2 text-[9px] uppercase tracking-wider text-slate-600">Advertisement</span>
+            <div class="py-2 flex items-center justify-center space-x-2 text-slate-400">
+                <i data-lucide="dollar-sign" class="w-4 h-4 text-emerald-400"></i>
+                <span>Monetized Ad View Area (Per Click & View Earning Active)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 py-6 text-center text-xs text-slate-500">
+        <p>&copy; 2026 Rummaina Drop Suite. All rights reserved.</p>
+    </footer>
+
+    <!-- Logic Script -->
     <script>
+        lucide.createIcons();
+
+        let activeTab = 'video';
         const dropZone = document.getElementById('dropZone');
         const fileInput = document.getElementById('fileInput');
-        const fileInfoBox = document.getElementById('fileInfoBox');
+        const controlPanel = document.getElementById('controlPanel');
         const fileName = document.getElementById('fileName');
         const fileSize = document.getElementById('fileSize');
-        const removeFile = document.getElementById('removeFile');
-        const previewContainer = document.getElementById('previewContainer');
-        const formatSelect = document.getElementById('formatSelect');
-        const convertBtn = document.getElementById('convertBtn');
-        const progressBarWrapper = document.getElementById('progressBarWrapper');
-        const progressBar = document.getElementById('progressBar');
-        const progressPercent = document.getElementById('progressPercent');
-        const progressStatusText = document.getElementById('progressStatusText');
-        const successBox = document.getElementById('successBox');
-        const downloadLink = document.getElementById('downloadLink');
-
+        const targetFormat = document.getElementById('targetFormat');
+        const proDropdown = document.getElementById('proDropdown');
+        const proModal = document.getElementById('proModal');
+        const ratingModal = document.getElementById('ratingModal');
+        
         let selectedFile = null;
 
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        function toggleProMenu() {
+            proDropdown.classList.toggle('hidden');
+        }
 
-        dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('border-indigo-500'); });
-        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('border-indigo-500'));
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('header')) {
+                proDropdown.classList.add('hidden');
+            }
+        });
+
+        function closeProModal() {
+            proModal.classList.add('hidden');
+        }
+
+        function openRatingModal() {
+            ratingModal.classList.remove('hidden');
+        }
+
+        function closeRatingModal() {
+            ratingModal.classList.add('hidden');
+        }
+
+        const formatsConfig = {
+            video: {
+                accept: 'video/*',
+                label: 'Video',
+                sub: 'Free Limit: Up to 50MB. (Need 4K & Bulk? Go Pro!)',
+                options: [
+                    { val: 'mp4', name: 'MP4 (H.264 / Universal)' },
+                    { val: 'webm', name: 'WEBM (Optimized Web)' },
+                    { val: 'mov', name: 'MOV (Apple QuickTime)' },
+                    { val: 'avi', name: 'AVI High Compatibility' },
+                    { val: 'gif', name: 'Animated GIF' }
+                ]
+            },
+            image: {
+                accept: 'image/*',
+                label: 'Image',
+                sub: 'Free Limit: Up to 50MB. (Need 4K & Bulk? Go Pro!)',
+                options: [
+                    { val: 'png', name: 'PNG Lossless' },
+                    { val: 'jpeg', name: 'JPG / JPEG' },
+                    { val: 'webp', name: 'WEBP Modern Format' },
+                    { val: 'ico', name: 'ICO Favicon' }
+                ]
+            },
+            audio: {
+                accept: 'audio/*',
+                label: 'Audio',
+                sub: 'Free Limit: Up to 50MB. (Need 4K & Bulk? Go Pro!)',
+                options: [
+                    { val: 'mp3', name: 'MP3 Standard Audio' },
+                    { val: 'wav', name: 'WAV Lossless Studio' },
+                    { val: 'aac', name: 'AAC High Quality' },
+                    { val: 'ogg', name: 'OGG Vorbis' }
+                ]
+            },
+            doc: {
+                accept: '.pdf,.docx,.txt,.xlsx,.csv',
+                label: 'Document',
+                sub: 'Free Limit: Up to 50MB. (Need 4K & Bulk? Go Pro!)',
+                options: [
+                    { val: 'pdf', name: 'PDF Portable Format' },
+                    { val: 'txt', name: 'Plain Text (TXT)' },
+                    { val: 'docx', name: 'Microsoft Word' }
+                ]
+            }
+        };
+
+        function switchTab(tab) {
+            activeTab = tab;
+            ['video', 'image', 'audio', 'doc'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tab) {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-purple-600 text-white flex items-center space-x-2 shadow-md shadow-purple-600/20";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-bold transition-all bg-slate-900 text-slate-400 hover:text-white flex items-center space-x-2";
+                }
+            });
+
+            const cfg = formatsConfig[tab];
+            fileInput.accept = cfg.accept;
+            document.getElementById('currentTypeLabel').innerText = cfg.label;
+            document.getElementById('dropSubLabel').innerText = cfg.sub;
+            
+            const iconMap = { video: 'video', image: 'image', audio: 'music', doc: 'file-text' };
+            document.getElementById('dropIcon').setAttribute('data-lucide', iconMap[tab]);
+            lucide.createIcons();
+
+            targetFormat.innerHTML = '';
+            cfg.options.forEach(opt => {
+                const el = document.createElement('option');
+                el.value = opt.val;
+                el.innerText = opt.name;
+                targetFormat.appendChild(el);
+            });
+
+            controlPanel.classList.add('hidden');
+            selectedFile = null;
+        }
+
+        switchTab('video');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-purple-500', 'bg-slate-900/80');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('border-purple-500', 'bg-slate-900/80');
+        });
+
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
-            dropZone.classList.remove('border-indigo-500');
-            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            dropZone.classList.remove('border-purple-500', 'bg-slate-900/80');
+            if (e.dataTransfer.files.length > 0) {
+                handleFile(e.dataTransfer.files[0]);
+            }
         });
 
         function handleFile(file) {
-            if (!file) return;
-            selectedFile = file;
-            fileName.textContent = file.name;
-            fileSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-            
-            dropZone.classList.add('hidden');
-            fileInfoBox.classList.remove('hidden');
-            convertBtn.classList.remove('hidden');
-            successBox.classList.add('hidden');
-            previewContainer.innerHTML = '';
-            previewContainer.classList.add('hidden');
-
-            if (file.type.startsWith('image/')) {
-                formatSelect.innerHTML = `
-                    <option value="png">PNG</option>
-                    <option value="jpg">JPG</option>
-                    <option value="webp">WEBP</option>
-                `;
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    previewContainer.innerHTML = `<img src="${e.target.result}" class="max-h-32 rounded-lg border border-slate-700 object-contain">`;
-                    previewContainer.classList.remove('hidden');
-                };
-                reader.readAsDataURL(file);
-            } else if (file.type.startsWith('audio/')) {
-                formatSelect.innerHTML = `
-                    <option value="mp3">MP3</option>
-                    <option value="wav">WAV</option>
-                `;
-                previewContainer.innerHTML = `<audio controls class="w-full h-10"><source src="${URL.createObjectURL(file)}"></audio>`;
-                previewContainer.classList.remove('hidden');
-            } else if (file.type.startsWith('video/')) {
-                formatSelect.innerHTML = `
-                    <option value="mp4">MP4</option>
-                    <option value="webm">WEBM</option>
-                `;
-                previewContainer.innerHTML = `<video controls class="max-h-32 rounded-lg border border-slate-700"><source src="${URL.createObjectURL(file)}"></video>`;
-                previewContainer.classList.remove('hidden');
+            const maxSizeMB = 50;
+            if (file.size > maxSizeMB * 1024 * 1024) {
+                proModal.classList.remove('hidden');
+                return;
             }
+
+            selectedFile = file;
+            fileName.innerText = file.name;
+            fileSize.innerText = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+
+            controlPanel.classList.remove('hidden');
+            document.getElementById('successBox').classList.add('hidden');
+            document.getElementById('progressBarWrapper').classList.add('hidden');
         }
 
-        removeFile.addEventListener('click', () => {
-            selectedFile = null;
-            fileInput.value = '';
-            fileInfoBox.classList.add('hidden');
-            convertBtn.classList.add('hidden');
-            dropZone.classList.remove('hidden');
-            previewContainer.innerHTML = '';
-            previewContainer.classList.add('hidden');
-        });
-
-        convertBtn.addEventListener('click', () => {
+        function processConversion() {
             if (!selectedFile) return;
-            convertBtn.classList.add('hidden');
-            fileInfoBox.classList.add('hidden');
+
+            const chosenFormat = targetFormat.value;
+            const progressBarWrapper = document.getElementById('progressBarWrapper');
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const successBox = document.getElementById('successBox');
+
             progressBarWrapper.classList.remove('hidden');
+            successBox.classList.add('hidden');
+            progressBar.style.width = '0%';
+            progressPercent.innerText = '0%';
 
             let progress = 0;
-            const chosenFormat = formatSelect.value;
-            progressStatusText.innerText = `Converting to ${chosenFormat.toUpperCase()}...`;
-
             const interval = setInterval(() => {
                 progress += 25;
                 progressBar.style.width = progress + '%';
@@ -265,74 +510,32 @@
                         progressBarWrapper.classList.add('hidden');
                         successBox.classList.remove('hidden');
 
-                        if (selectedFile.type.startsWith('image/')) {
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                                const img = new Image();
-                                img.onload = () => {
-                                    const canvas = document.createElement('canvas');
-                                    canvas.width = img.width;
-                                    canvas.height = img.height;
-                                    const ctx = canvas.getContext('2d');
-                                    ctx.drawImage(img, 0, 0);
-
-                                    let mimeType = 'image/png';
-                                    if (chosenFormat === 'jpg') mimeType = 'image/jpeg';
-                                    if (chosenFormat === 'webp') mimeType = 'image/webp';
-
-                                    canvas.toBlob((blob) => {
-                                        const url = URL.createObjectURL(blob);
-                                        downloadLink.href = url;
-                                        const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
-                                        downloadLink.download = `${baseName}-rummaina-pro.${chosenFormat}`;
-                                    }, mimeType, 0.9);
-                                };
-                                img.src = event.target.result;
-                            };
-                            reader.readAsDataURL(selectedFile);
-                        } else {
-                            const blob = new Blob([selectedFile], { type: selectedFile.type });
-                            const url = URL.createObjectURL(blob);
-                            downloadLink.href = url;
-                            const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
-                            downloadLink.download = `${baseName}-rummaina-pro.${chosenFormat}`;
-                        }
-
-                        // Check 3 projects completed
-                        checkProjectCount();
+                        const blob = new Blob([selectedFile], { type: selectedFile.type });
+                        const url = URL.createObjectURL(blob);
+                        const downloadLink = document.getElementById('downloadLink');
+                        downloadLink.href = url;
+                        
+                        const baseName = selectedFile.name.substring(0, selectedFile.name.lastIndexOf('.')) || 'file';
+                        downloadLink.download = `${baseName}-rummaina-converted.${chosenFormat}`;
                     }, 300);
                 }
             }, 200);
-        });
-
-        // 3 Projects Logic & Star Rating System
-        function checkProjectCount() {
-            let projectCount = localStorage.getItem('userProjectCount') || 0;
-            projectCount = parseInt(projectCount) + 1;
-            localStorage.setItem('userProjectCount', projectCount);
-
-            if (projectCount === 3) {
-                showRatingModal();
-            }
         }
 
-        function showRatingModal() {
-            document.getElementById('ratingModal').classList.remove('hidden');
-        }
-
-        const stars = document.querySelectorAll('.star');
-        const reactionBox = document.getElementById('reactionBox');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-
+        // 7-Star Rating Feedback Logic
         const reactions = {
-            1: "😭 1 Star? Arre yaar! Hum mazeed mehnat karenge aur behtar banayenge.",
-            2: "🙁 2 Stars? Lagta hai kuch kami reh gayi hai, hum isay zaroor theek karenge.",
-            3: "😐 3 Stars? Theek hai, lekin hum aapko mazeed impress karna chahte hain!",
-            4: "🙂 4 Stars? Shukriya! Yeh ek achi shuruat hai, aage aur behtar hoga.",
-            5: "😊 5 Stars? Bohot shukriya! Aapka dil jeet liya humne.",
-            6: "😍 6 Stars? Wow! Aapko website sach mein bohot pasand aayi hai!",
-            7: "🥳 7/7 Stars!! King-size pyaar! Aapne toh dil hi khush kar diya, zabardast!"
+            1: "1/7 Stars: Oh no! We will improve our tools based on your feedback.",
+            2: "2/7 Stars: Thanks for trying. Tell us what we can fix!",
+            3: "3/7 Stars: Fair enough! We're working hard to make it better.",
+            4: "4/7 Stars: Good! Thanks for your valuable support.",
+            5: "5/7 Stars!! Awesome! Glad you like Rummaina Drop.",
+            6: "6/7 Stars!! Amazing experience! You rock!",
+            7: "7/7 Stars!! King-size pyaar! Aapne toh dil hi khush kar diya, zabardast!"
         };
+
+        const stars = document.querySelectorAll('.star-btn');
+        const reactionBox = document.getElementById('reactionBox');
+        const closeModal1Btn = document.getElementById('closeModal1Btn');
 
         stars.forEach(star => {
             star.addEventListener('click', () => {
@@ -349,12 +552,8 @@
                 });
 
                 reactionBox.innerHTML = reactions[val];
-                closeModalBtn.classList.remove('hidden');
+                closeModal1Btn.classList.remove('hidden');
             });
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            document.getElementById('ratingModal').classList.add('hidden');
         });
     </script>
 </body>
